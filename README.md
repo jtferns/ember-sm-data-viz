@@ -1,5 +1,7 @@
 # ember-sm-data-viz
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/jtferns/ember-sm-data-viz.svg)](https://greenkeeper.io/)
+
 This README outlines the details of collaborating on this Ember addon.
 
 ## Installation
