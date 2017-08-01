@@ -13,8 +13,6 @@ const {
   Component,
 } = Ember;
 
-const fill = scaleOrdinal(schemeCategory10);
-
 export default Component.extend({
   layout,
 
@@ -24,6 +22,7 @@ export default Component.extend({
   padding: computed(() => 2),
   font: computed(() => 'Helvetica'),
   rotate: computed(() => 0),
+  fill: computed(() => scaleOrdinal(schemeCategory10)),
 
   didReceiveAttrs() {
     if (isPresent(get(this, 'words'))) {
@@ -56,7 +55,7 @@ export default Component.extend({
         .enter().append('text')
           .style('font-size', d => `${d.size}px`)
           .style('font-family', font)
-          .style('fill', (d, i) => fill(i))
+          .style('fill', (d, i) => get(this, 'fill')(i))
           .attr('text-anchor', 'middle')
           .attr('transform', d => `translate(${[d.x, d.y]})rotate(${d.rotate})`)
           .text(d => d.text);
