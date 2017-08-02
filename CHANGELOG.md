@@ -1,6 +1,12 @@
 Ember SM Data Viz Changelog
 =========
 
+## v0.0.2
+
+### Pull Requests
+
+- [#7](https://github.com/jtferns/ember-sm-data-viz/pull/7)  [ENHANCEMENT] ➕  font size property  *by [janoo](https://github.com/jtferns/enhancement)*
+
 ## v0.0.1
 
 ### Pull Requests
