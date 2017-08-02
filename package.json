@@ -1,6 +1,6 @@
 {
   "name": "ember-sm-data-viz",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "The default blueprint for ember-cli addons.",
   "keywords": [
     "ember-addon"
@@ -15,7 +15,7 @@
   "scripts": {
     "build": "ember build",
     "start": "ember server",
-    "test": "ember try:each"
+    "test": "ember test"
   },
   "dependencies": {
     "ember-cli-babel": "^5.1.7",

@@ -23,6 +23,7 @@ export default Component.extend({
   font: computed(() => 'Helvetica'),
   rotate: computed(() => 0),
   fill: computed(() => scaleOrdinal(schemeCategory10)),
+  fontSize: computed(() => (word) => Math.sqrt(word.value)),
 
   didReceiveAttrs() {
     if (isPresent(get(this, 'words'))) {
@@ -43,7 +44,7 @@ export default Component.extend({
       .words(get(this, 'words'))
       .padding(padding)
       .rotate(rotate)
-      .fontSize((word) => Math.sqrt(word.value))
+      .fontSize((word) => get(this, 'fontSize')(word))
       .on('end', words => {
         select(this.element).append('svg')
           .attr('width', layout.size()[0])
