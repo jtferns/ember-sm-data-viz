@@ -1,5 +1,29 @@
-{{!-- The following component displays Ember's default welcome message. --}}
-{{welcome-page}}
-{{!-- Feel free to remove this! --}}
-
 {{outlet}}
+
+<div class="word-cloud-demo">
+  {{word-cloud words=words}}
+</div>
+
+<code>debugWords <button {{action "randomize"}}>🔀 </button></code>
+
+<div class="debug-lists">
+  {{#each-in debugWords as |type values|}}
+    <div>
+      <code>{{type}} ({{values.length}})</code>
+      <ul>
+        {{#each values as |term|}}
+          <li>{{term.text}} ({{term.value}})</li>
+        {{/each}}
+      </ul>
+    </div>
+  {{/each-in}}
+
+  <div>
+    <code><strong>words ({{words.length}})</strong></code>
+    <ul>
+      {{#each words as |word|}}
+        <li>{{word.text}} ({{word.value}})</li>
+      {{/each}}
+    </ul>
+  </div>
+</div>

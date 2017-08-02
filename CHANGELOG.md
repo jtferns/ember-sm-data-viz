@@ -1,0 +1,19 @@
+Ember SM Data Viz Changelog
+=========
+
+## v0.0.1
+
+### Pull Requests
+
+- [#1](https://github.com/jtferns/ember-sm-data-viz/pull/1)  ➕ CircleCI 🎛  & NVM version file  *by [janoo](https://github.com/jtferns/enhancement/unfiled)*
+- [#2](https://github.com/jtferns/ember-sm-data-viz/pull/2)  [ENHANCEMENT] ➕ Yarn 🔒  file  *by [janoo](https://github.com/jtferns/enhancement/unfiled)*
+- [#4](https://github.com/jtferns/ember-sm-data-viz/pull/4)  [FEATURE] ➕ the first 📝  ☁️  *by [janoo](https://github.com/jtferns/feature)*
+- [#5](https://github.com/jtferns/ember-sm-data-viz/pull/5)  [ENHANCEMENT] ➕ 🚀  *by [janoo](https://github.com/jtferns/enhancement)*
+- [#6](https://github.com/jtferns/ember-sm-data-viz/pull/6)  [ENHANCEMENT] 🔧 `fill` as a property on `word-cloud`  *by [janoo](https://github.com/jtferns/enhancement)*
+
+## 0.0.0
+
+- Hold Your Horses,
+- Pack Your Parachutes,
+- We're Coming,
+- But we haven't released anything yet.
