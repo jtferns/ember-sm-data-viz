@@ -22,8 +22,11 @@ export default Component.extend({
   padding: computed(() => 2),
   font: computed(() => 'Helvetica'),
   rotate: computed(() => 0),
-  fill: computed(() => (d, i) => scaleOrdinal(schemeCategory10)(i)),
+  fill: computed('colorScale', function() {
+    return (d, i) => get(this, 'colorScale')(i);
+  }),
   fontSize: computed(() => (word) => Math.sqrt(word.value)),
+  colorScale: computed(() => scaleOrdinal(schemeCategory10)),
 
   didReceiveAttrs() {
     if (isPresent(get(this, 'words'))) {
