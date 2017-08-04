@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import _ from 'lodash';
+import { scaleLog } from 'd3-scale';
 
 const {
   computed,
@@ -102,9 +103,29 @@ export default Controller.extend({
      .concat()
      .sortBy('value')
      .reverse()
-     .slice(0, get(this, 'wordLimit'))
+    //  .slice(0, get(this, 'wordLimit'))
      .value();
   }).readOnly(),
+
+  fontSize: computed('fontSizeScale', function() {
+    return (d) => get(this, 'fontSizeScale')(d.value);
+  }),
+  fontSizeScale: computed('words', function() {
+    let words = get(this, 'words');
+    return scaleLog()
+      .domain([_.minBy(words, 'value').value, _.maxBy(words, 'value').value])
+      .range([10, 30]);
+  }),
+
+  fill: computed('colorScale', function() {
+    return (d) => get(this, 'colorScale')(d.value);
+  }),
+  colorScale: computed('words', function() {
+    let words = get(this, 'words');
+    return scaleLog()
+      .domain([_.minBy(words, 'value').value, _.maxBy(words, 'value').value])
+      .range(['#80b1d3', '#fb8072']);
+  }),
 
   actions: {
     randomize() {

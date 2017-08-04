@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import { scaleOrdinal, schemeCategory10 } from 'd3-scale';
-import { select } from 'd3-selection';
+import { mouse, select } from 'd3-selection';
+import { format } from 'd3-format';
 import cloud from 'ember-sm-data-viz/utils/d3-cloud';
 import layout from '../templates/components/word-cloud';
 
@@ -22,6 +23,8 @@ export default Component.extend({
   padding: computed(() => 2),
   font: computed(() => 'Helvetica'),
   rotate: computed(() => 0),
+  format: computed(() => format(',d')),
+  fontWeight: computed(() => () => 400),
   fill: computed('colorScale', function() {
     return (d, i) => get(this, 'colorScale')(i);
   }),
@@ -36,10 +39,13 @@ export default Component.extend({
 
   _drawWordCloud() {
     const {
-      width, height, font, padding, rotate,
-    } = getProperties(this, ['width', 'height', 'font', 'padding', 'rotate']);
+      width, height, font, padding, rotate, format,
+    } = getProperties(this, ['width', 'height', 'font', 'padding', 'rotate', 'format']);
 
     select(this.element).selectAll('*').remove();
+
+    const tooltip = select(this.element).append('div')
+      .attr('class', 'word-cloud-tooltip');
 
     const layout = cloud()
       .size([width, height])
@@ -48,6 +54,7 @@ export default Component.extend({
       .padding(padding)
       .rotate(rotate)
       .fontSize((word) => get(this, 'fontSize')(word))
+      .fontWeight((word) => get(this, 'fontWeight')(word))
       .on('end', words => {
         select(this.element).append('svg')
           .attr('width', layout.size()[0])
@@ -57,12 +64,22 @@ export default Component.extend({
         .selectAll('text')
           .data(words)
         .enter().append('text')
+          .attr('class', 'word-cloud-text')
           .style('font-size', d => `${d.size}px`)
           .style('font-family', font)
+          .style('font-weight', d => d.weight)
           .style('fill', (d, i) => get(this, 'fill')(d, i))
           .attr('text-anchor', 'middle')
           .attr('transform', d => `translate(${[d.x, d.y]})rotate(${d.rotate})`)
-          .text(d => d.text);
+          .text(d => d.text)
+        .on('mouseover', d => {
+          let [left, top] = mouse(this.element);
+          tooltip.text(format(d.value))
+            .style('opacity', 1)
+            .style("top", (top + 25) + "px")
+            .style("left",(left - 50) + "px")
+        })
+        .on('mouseout', () => tooltip.style('opacity', 0));
       });
 
     layout.start();
