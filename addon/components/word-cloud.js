@@ -33,8 +33,12 @@ export default Component.extend({
 
   didReceiveAttrs() {
     if (isPresent(get(this, 'words'))) {
-      run.scheduleOnce('afterRender', this, '_drawWordCloud');
+      run.throttle(this, '_scheduleDraw', 1000, false);
     }
+  },
+
+  _scheduleDraw() {
+    run.scheduleOnce('afterRender', this, '_drawWordCloud');
   },
 
   _drawWordCloud() {
