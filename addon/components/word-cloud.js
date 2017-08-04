@@ -22,8 +22,11 @@ export default Component.extend({
   padding: computed(() => 2),
   font: computed(() => 'Helvetica'),
   rotate: computed(() => 0),
-  fill: computed(() => scaleOrdinal(schemeCategory10)),
+  fill: computed('colorScale', function() {
+    return (d, i) => get(this, 'colorScale')(i);
+  }),
   fontSize: computed(() => (word) => Math.sqrt(word.value)),
+  colorScale: computed(() => scaleOrdinal(schemeCategory10)),
 
   didReceiveAttrs() {
     if (isPresent(get(this, 'words'))) {
@@ -56,7 +59,7 @@ export default Component.extend({
         .enter().append('text')
           .style('font-size', d => `${d.size}px`)
           .style('font-family', font)
-          .style('fill', (d, i) => get(this, 'fill')(i))
+          .style('fill', (d, i) => get(this, 'fill')(d, i))
           .attr('text-anchor', 'middle')
           .attr('transform', d => `translate(${[d.x, d.y]})rotate(${d.rotate})`)
           .text(d => d.text);
