@@ -4,6 +4,7 @@ import { scaleLog } from 'd3-scale';
 
 const {
   computed,
+  debug,
   get,
   getProperties,
   Controller,
@@ -130,6 +131,9 @@ export default Controller.extend({
   actions: {
     randomize() {
       this.notifyPropertyChange('randomKey');
-    }
+    },
+    customWordClickHandler(word) {
+      debug(`${word.text} : ${word.value}`);
+    },
   }
 });

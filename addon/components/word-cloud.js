@@ -7,6 +7,7 @@ import layout from '../templates/components/word-cloud';
 
 const {
   computed,
+  debug,
   get,
   getProperties,
   isPresent,
@@ -30,10 +31,12 @@ export default Component.extend({
   }),
   fontSize: computed(() => (word) => Math.sqrt(word.value)),
   colorScale: computed(() => scaleOrdinal(schemeCategory10)),
+  wordClickHandler: computed(() => (word) => debug(word.text)),
+  redrawDelay: computed(() => 1000),
 
   didReceiveAttrs() {
     if (isPresent(get(this, 'words'))) {
-      run.throttle(this, '_scheduleDraw', 1000, false);
+      run.throttle(this, '_scheduleDraw', get(this, 'redrawDelay'), false);
     }
   },
 
@@ -83,7 +86,8 @@ export default Component.extend({
             .style("top", (top + 25) + "px")
             .style("left",(left - 50) + "px")
         })
-        .on('mouseout', () => tooltip.style('opacity', 0));
+        .on('mouseout', () => tooltip.style('opacity', 0))
+        .on('click', d => get(this, 'wordClickHandler')(d));
       });
 
     layout.start();
