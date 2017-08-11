@@ -90,10 +90,14 @@ export default Component.extend({
         .on('mouseover', function (d, i, textElements) {
           let { top, left, width } = this.getBoundingClientRect();
           let { height: tipHeight, width: tipWidth } = tooltip.node().getBoundingClientRect();
+          let { top: bodyTop } = document.body.getBoundingClientRect();
+
+          let tooltipTop = (top - bodyTop - tipHeight - 10);
+          let tooltipLeft = (left + (width / 2) - (tipWidth / 2));
 
           tooltip.text(format(d.value))
-            .style("top", (top - tipHeight - 10) + "px")
-            .style("left", (left + (width / 2) - (tipWidth / 2)) + "px");
+            .style("top", `${tooltipTop}px`)
+            .style("left",  `${tooltipLeft}px`);
 
           tooltip.transition()
             .style('opacity', 1);
