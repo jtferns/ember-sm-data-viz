@@ -2,6 +2,8 @@ import Ember from 'ember';
 import { scaleOrdinal, schemeCategory10 } from 'd3-scale';
 import { select } from 'd3-selection';
 import { format } from 'd3-format';
+import { hsl } from 'd3-color';
+import { transition } from 'd3-transition'; // eslint-disable-line no-unused-vars
 import cloud from 'ember-sm-data-viz/utils/d3-cloud';
 import layout from '../templates/components/word-cloud';
 
@@ -33,6 +35,7 @@ export default Component.extend({
   colorScale: computed(() => scaleOrdinal(schemeCategory10)),
   wordClickHandler: computed(() => (word) => debug(word.text)),
   redrawDelay: computed(() => 1000),
+  unfocusedSaturation: computed(() => .2),
 
   didReceiveAttrs() {
     if (isPresent(get(this, 'words'))) {
@@ -76,18 +79,36 @@ export default Component.extend({
           .style('font-family', font)
           .style('font-weight', d => d.weight)
           .style('fill', (d, i) => get(this, 'fill')(d, i))
+          .attr('focused', (d, i) => get(this, 'fill')(d, i))
+          .attr('unfocused', (d, i) => {
+            let hslFill = hsl(get(this, 'fill')(d, i));
+            return hsl(hslFill.h, hslFill.s * get(this, 'unfocusedSaturation'), hslFill.l);
+          })
           .attr('text-anchor', 'middle')
           .attr('transform', d => `translate(${[d.x, d.y]})rotate(${d.rotate})`)
           .text(d => d.text)
-        .on('mouseover', function (d) {
+        .on('mouseover', function (d, i, textElements) {
           let { top, left, width } = this.getBoundingClientRect();
           let { height: tipHeight, width: tipWidth } = tooltip.node().getBoundingClientRect();
+
           tooltip.text(format(d.value))
-            .style('opacity', 1)
             .style("top", (top - tipHeight - 10) + "px")
-            .style("left", (left + (width / 2) - (tipWidth / 2)) + "px")
+            .style("left", (left + (width / 2) - (tipWidth / 2)) + "px");
+
+          tooltip.transition()
+            .style('opacity', 1);
+
+          textElements.forEach((w) => {
+            if (w === this) { return; }
+            select(w).transition().style('fill', w.getAttribute('unfocused'))
+          });
         })
-        .on('mouseout', () => tooltip.style('opacity', 0))
+        .on('mouseout', (d, i, textElements) => {
+          tooltip.transition().style('opacity', 0);
+
+          textElements
+            .forEach((w) => select(w).transition().style('fill', w.getAttribute('focused')))
+        })
         .on('click', d => get(this, 'wordClickHandler')(d));
       });
 
