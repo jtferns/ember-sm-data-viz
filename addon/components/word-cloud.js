@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import { scaleOrdinal, schemeCategory10 } from 'd3-scale';
-import { mouse, select } from 'd3-selection';
+import { select } from 'd3-selection';
 import { format } from 'd3-format';
 import cloud from 'ember-sm-data-viz/utils/d3-cloud';
 import layout from '../templates/components/word-cloud';
@@ -79,12 +79,13 @@ export default Component.extend({
           .attr('text-anchor', 'middle')
           .attr('transform', d => `translate(${[d.x, d.y]})rotate(${d.rotate})`)
           .text(d => d.text)
-        .on('mouseover', d => {
-          let [left, top] = mouse(this.element);
+        .on('mouseover', function (d) {
+          let { top, left, width } = this.getBoundingClientRect();
+          let { height: tipHeight, width: tipWidth } = tooltip.node().getBoundingClientRect();
           tooltip.text(format(d.value))
             .style('opacity', 1)
-            .style("top", (top + 25) + "px")
-            .style("left",(left - 50) + "px")
+            .style("top", (top - tipHeight - 10) + "px")
+            .style("left", (left + (width / 2) - (tipWidth / 2)) + "px")
         })
         .on('mouseout', () => tooltip.style('opacity', 0))
         .on('click', d => get(this, 'wordClickHandler')(d));
