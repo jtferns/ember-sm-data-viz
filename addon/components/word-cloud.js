@@ -36,6 +36,7 @@ export default Component.extend({
   wordClickHandler: computed(() => (word) => debug(word.text)),
   redrawDelay: computed(() => 1000),
   unfocusedSaturation: computed(() => .2),
+  transitionDuration: computed(() => 100),
 
   didReceiveAttrs() {
     if (isPresent(get(this, 'words'))) {
@@ -100,18 +101,26 @@ export default Component.extend({
             .style("left",  `${tooltipLeft}px`);
 
           tooltip.transition()
+            .duration(get(this, 'transitionDuration'))
             .style('opacity', 1);
 
           textElements.forEach((w) => {
             if (w === this) { return; }
-            select(w).transition().style('fill', w.getAttribute('unfocused'))
+            select(w).transition()
+              .duration(get(this, 'transitionDuration'))
+              .style('fill', w.getAttribute('unfocused'))
           });
         })
         .on('mouseout', (d, i, textElements) => {
-          tooltip.transition().style('opacity', 0);
+          tooltip.transition()
+            .duration(get(this, 'transitionDuration'))
+            .style('opacity', 0);
 
           textElements
-            .forEach((w) => select(w).transition().style('fill', w.getAttribute('focused')))
+            .forEach((w) => select(w).transition()
+              .duration(get(this, 'transitionDuration'))
+              .style('fill', w.getAttribute('focused'))
+            )
         })
         .on('click', d => get(this, 'wordClickHandler')(d));
       });
