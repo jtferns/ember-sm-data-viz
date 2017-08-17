@@ -216,7 +216,7 @@ export default function cloud() {
       fontWeight = cloudFontNormal,
       rotate = cloudRotate,
       padding = cloudPadding,
-      spiral = rectangularSpiral,
+      spiral = archimedeanSpiral,
       words = [],
       timeInterval = Infinity,
       event = dispatch("word", "end"),
