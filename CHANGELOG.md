@@ -1,6 +1,12 @@
 Ember SM Data Viz Changelog
 =========
 
+## v0.0.4
+
+### Pull Requests
+
+- [#9](https://github.com/jtferns/ember-sm-data-viz/pull/9)  [ENHANCEMENT] 🎛   for days  *by [janoo](https://github.com/jtferns/enhancement)*
+
 ## v0.0.3
 
 ### Pull Requests
