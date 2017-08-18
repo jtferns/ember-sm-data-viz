@@ -40,7 +40,8 @@ function cloudPadding() {
 // Fetches a monochrome sprite bitmap for the specified text.
 // Load in batches for speed.
 function cloudSprite(contextAndRatio, d, data, di) {
-  if (d.sprite) return;
+  // HACK: always redraw the first 10 elements
+  if (d.sprite && di >= 9) return;
   let c = contextAndRatio.context,
       ratio = contextAndRatio.ratio;
 
