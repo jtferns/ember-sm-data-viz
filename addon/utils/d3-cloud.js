@@ -40,7 +40,9 @@ function cloudPadding() {
 // Fetches a monochrome sprite bitmap for the specified text.
 // Load in batches for speed.
 function cloudSprite(contextAndRatio, d, data, di) {
-  if (d.sprite) return;
+  // HACK: always redraw the first 10 elements until this issue is resolved:
+  // https://github.com/jasondavies/d3-cloud/issues/36
+  if (d.sprite && di >= 9) return;
   let c = contextAndRatio.context,
       ratio = contextAndRatio.ratio;
 
@@ -216,7 +218,7 @@ export default function cloud() {
       fontWeight = cloudFontNormal,
       rotate = cloudRotate,
       padding = cloudPadding,
-      spiral = rectangularSpiral,
+      spiral = archimedeanSpiral,
       words = [],
       timeInterval = Infinity,
       event = dispatch("word", "end"),

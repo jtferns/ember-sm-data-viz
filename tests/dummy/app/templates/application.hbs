@@ -1,7 +1,13 @@
 {{outlet}}
 
 <div class="word-cloud-demo">
-  {{word-cloud words=words}}
+  {{word-cloud
+    words=words
+    fontSize=fontSize
+    fill=fill
+    wordClickHandler=(action "customWordClickHandler")
+    unfocusedSaturation=0.1
+  }}
 </div>
 
 <code>debugWords <button {{action "randomize"}}>🔀 </button></code>
