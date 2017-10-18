@@ -50,12 +50,12 @@ export default Component.extend({
 
   _drawWordCloud() {
     const {
-      width, height, font, padding, rotate, format,
-    } = getProperties(this, ['width', 'height', 'font', 'padding', 'rotate', 'format']);
+      width, height, font, padding, rotate, format, elementId,
+    } = getProperties(this, ['width', 'height', 'font', 'padding', 'rotate', 'format', 'elementId']);
 
     select(this.element).selectAll('*').remove();
 
-    const tooltip = select(this.element).append('div')
+    select(this.element).append('div')
       .attr('class', 'word-cloud-tooltip');
 
     const layout = cloud()
@@ -89,6 +89,8 @@ export default Component.extend({
           .attr('transform', d => `translate(${[d.x, d.y]})rotate(${d.rotate})`)
           .text(d => d.text)
         .on('mouseover', function (d, i, textElements) {
+          let tooltip = select(`#${elementId} .word-cloud-tooltip`);
+
           let { top, left, width } = this.getBoundingClientRect();
           let { height: tipHeight, width: tipWidth } = tooltip.node().getBoundingClientRect();
           let { top: bodyTop } = document.body.getBoundingClientRect();
@@ -112,6 +114,8 @@ export default Component.extend({
           });
         })
         .on('mouseout', (d, i, textElements) => {
+          let tooltip = select(`#${elementId} .word-cloud-tooltip`);
+
           tooltip.transition()
             .duration(get(this, 'transitionDuration'))
             .style('opacity', 0);
